@@ -1,0 +1,7 @@
+hosts:
+  - name: "k3s-master"
+    ip: "192.168.1.240"
+    port: 22
+  - name: "k3s-worker"
+    ip: "192.168.1.201"
+    port: 22
