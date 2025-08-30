@@ -7,7 +7,13 @@ type HostConfig struct {
 }
 
 type Hosts struct {
-	HostsConfigs []HostConfig `yaml:"hosts"`
+	Groups []Group `yaml:"groups"`
+}
+
+type Group struct {
+	Name      string       `yaml:"name"`
+	Hosts     []HostConfig `yaml:"hosts"`
+	SubGroups []Group      `yaml:"groups"`
 }
 
 type Flags struct {
