@@ -15,3 +15,9 @@ type Flags struct {
 	Password  string
 	Hostsfile string
 }
+
+type Plan struct {
+	Name     string `yaml:"name"`
+	Hosts    string `yaml:"hosts"`
+	Commands string `yaml:"commands"`
+}
