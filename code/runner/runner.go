@@ -10,7 +10,27 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func RunSSH(hostConfig api.HostConfig, user, password string, wg *sync.WaitGroup) {
+func ProcessHosts(hosts api.Hosts, user, password string, wg *sync.WaitGroup) {
+	processGroup(hosts.Groups, user, password, wg)
+
+	wg.Wait()
+	log.Println("All SSH operations completed.")
+}
+
+func processGroup(groups []api.Group, user, password string, wg *sync.WaitGroup) {
+	for _, group := range groups {
+		for _, host := range group.Hosts {
+			wg.Add(1)
+			go runSSH(host, user, password, wg)
+		}
+
+		if len(group.SubGroups) > 0 {
+			processGroup(group.SubGroups, user, password, wg)
+		}
+	}
+}
+
+func runSSH(hostConfig api.HostConfig, user, password string, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	address := fmt.Sprintf("%s:%d", hostConfig.IP, hostConfig.Port)

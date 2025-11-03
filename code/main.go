@@ -19,10 +19,7 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	for _, host := range hosts.HostsConfigs {
-		wg.Add(1)
-		go runner.RunSSH(host, flags.User, flags.Password, &wg)
-	}
+	runner.ProcessHosts(hosts, flags.User, flags.Password, &wg)
 
 	wg.Wait()
 	fmt.Println("\nAll connections have been processed.")
