@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	commandsParser "goble/parser/commands"
 	flagParser "goble/parser/flags"
 	hostParser "goble/parser/hosts"
 	"goble/runner"
@@ -10,17 +10,20 @@ import (
 )
 
 func main() {
-
+	log.SetFlags(0)
 	flags := flagParser.ParseFlags()
 
-	hosts, err := hostParser.ParseHosts(flags.Hostsfile)
+	hosts, err := hostParser.ParseHosts(flags.HostsFile)
 	if err != nil {
 		log.Fatalf("Error during hosts parsing")
 	}
+	commands, err := commandsParser.ParseCommands(flags.Commands)
+	if err != nil {
+		log.Fatalf("Error during commands parsing")
+	}
 
 	var wg sync.WaitGroup
-	runner.ProcessHosts(hosts, flags.User, flags.Password, &wg)
+	runner.ProcessHosts(hosts, commands, flags.User, flags.Password, &wg)
 
-	wg.Wait()
-	fmt.Println("\nAll connections have been processed.")
+	log.Println("\nAll connections have been processed.")
 }

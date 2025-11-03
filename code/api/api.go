@@ -19,11 +19,16 @@ type Group struct {
 type Flags struct {
 	User      string
 	Password  string
-	Hostsfile string
+	HostsFile string
+	Commands  string
 }
 
 type Plan struct {
 	Name     string `yaml:"name"`
 	Hosts    string `yaml:"hosts"`
 	Commands string `yaml:"commands"`
+}
+
+type Commands struct {
+	Command []string `yaml:"commands"`
 }
